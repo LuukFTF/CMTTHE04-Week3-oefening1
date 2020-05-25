@@ -1,4 +1,4 @@
-class Paddle {    
+class Paddle2 {    
 
     private element : HTMLElement
     private gameInstance : Game
@@ -25,10 +25,10 @@ class Paddle {
         let game = document.getElementsByTagName("game")[0]
         game.appendChild(this.element)
 
-        this.upkey   = 87
-        this.downkey = 83
+        this.upkey   = 38
+        this.downkey = 40
 
-        this.posX = 0
+        this.posX = window.innerWidth - this.element.clientWidth
         this.posY = 200
 
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))

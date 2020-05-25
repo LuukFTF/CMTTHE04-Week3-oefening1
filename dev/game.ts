@@ -7,7 +7,7 @@ class Game {
     public paddle2 : Paddle2
     public balls : Ball[] = []
 
-    private ballAmount : number = 1
+    private ballAmount : number = 3
 
     public score : number = 0
     

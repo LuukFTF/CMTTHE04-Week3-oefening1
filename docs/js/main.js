@@ -51,7 +51,7 @@ var Paddle = (function () {
         this.upSpeed = 0;
         this.element = document.createElement("paddle");
         this.gameInstance = gameInstance;
-        this.paddleSpeed = 3 * this.gameInstance.globalSpeed;
+        this.paddleSpeed = 10 * this.gameInstance.globalSpeed;
         var game = document.getElementsByTagName("game")[0];
         game.appendChild(this.element);
         this.upkey = 87;
@@ -95,7 +95,7 @@ var Paddle = (function () {
 var Game = (function () {
     function Game() {
         this.balls = [];
-        this.ballAmount = 1;
+        this.ballAmount = 3;
         this.score = 0;
         this.globalSpeed = 1;
         this.paddle = new Paddle(this);
@@ -145,7 +145,7 @@ var Paddle2 = (function () {
         this.upSpeed = 0;
         this.element = document.createElement("paddle");
         this.gameInstance = gameInstance;
-        this.paddleSpeed = 3 * this.gameInstance.globalSpeed;
+        this.paddleSpeed = 10 * this.gameInstance.globalSpeed;
         var game = document.getElementsByTagName("game")[0];
         game.appendChild(this.element);
         this.upkey = 38;

@@ -20,7 +20,7 @@ class Paddle2 {
 
         this.gameInstance = gameInstance
 
-        this.paddleSpeed = 3*this.gameInstance.globalSpeed
+        this.paddleSpeed = 10*this.gameInstance.globalSpeed
 
         let game = document.getElementsByTagName("game")[0]
         game.appendChild(this.element)

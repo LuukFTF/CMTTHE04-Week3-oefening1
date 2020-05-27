@@ -1,69 +1,70 @@
 class Ball {
-    
-    private element : HTMLElement
+    // Fields
+    private _div : HTMLElement
     private gameInstance : Game
 
-    private posX : number
-    private posY : number
-    public speedX : number
-    public speedY : number
-    public speed : number
+    private _X: number = 0
+    private _Y: number = 0
+
+    private xSpeed : number = 0
+    private ySpeed : number = 0
+
+    private _speedMultiplier : number = 0
+    private xSpeedMultiplier : number = 1.5
+    private ySpeedMultiplier : number = 1
     
+
+    // Properties
+    public get div(): HTMLElement           { return this._div }
+
+    public get X(): number                  { return this._X }
+    public get Y(): number                  { return this._Y }
+
+    public get speedMultiplier(): number    { return this._speedMultiplier }
+
+    // Constructor 
     constructor(gameInstance : Game) {
-
         this.gameInstance = gameInstance
+        this._speedMultiplier = this.gameInstance.globalSpeed
 
-        this.element = document.createElement("ball")
+        this._div = document.createElement("ball")
 
         let game = document.getElementsByTagName("game")[0]
-        game.appendChild(this.element)
+        game.appendChild(this._div)
 
-        this.posX = Math.random() * window.innerWidth - this.element.clientWidth
-        this.posY = Math.random() * window.innerHeight - this.element.clientHeight
+        this.spawn()
+    }
 
-        this.speed = this.gameInstance.globalSpeed
-        
-        if(Math.random() > 0.5) {
-            this.speedY = this.speed
-        } else {
-            this.speedY = this.speed * -1 
-        }
+    
+    // Functions
 
-        if(Math.random() > 0.5) {
-            this.speedX = this.speed
-        } else {
-            this.speedX = this.speed * -1 
-        }
+    // Init Functions
+    private spawn() {
+        if(Math.random() > 0.5) { this.ySpeed = this._speedMultiplier } else { this.ySpeed = this._speedMultiplier * -1 }
+        if(Math.random() > 0.5) { this.xSpeed = this._speedMultiplier } else { this.xSpeed = this._speedMultiplier * -1 }
+
+        this._X = Math.random() * window.innerWidth - this._div.clientWidth
+        this._Y = Math.random() * window.innerHeight - this._div.clientHeight
     }
     
+    // Loop Functions
     public update() : void {
-        this.posX += this.speedX
-        this.posY += this.speedY
+        this._X += this.xSpeed
+        this._Y += this.ySpeed
 
-
-        let rightBorder = window.innerWidth - this.element.clientWidth
-        let bottemBorder = window.innerHeight - this.element.clientHeight
-
-        // if(this.posX > rightBorder) {
-        //     this.speedX *= -1
-        // }
-        if(this.posY > bottemBorder || this.posY < 0) {
-            this.speedY *= -1
-        }
-
-        if(this.posX < 0 || this.posX > rightBorder){
-            let index = this.gameInstance.balls.indexOf(this)
-            this.gameInstance.balls.splice(index,1)
-            this.gameInstance.score--
-            document.getElementsByTagName("score")[0].innerHTML = `Score: ${this.gameInstance.score}`
-            this.element.parentNode?.removeChild(this.element)
-        }
-
-        this.element.style.transform = `translate(${this.posX}px, ${this.posY}px)`
-
+        this._div.style.transform = `translate(${this._X}px, ${this._Y}px)`
     }
 
+    // General Functions
     public getRectangle() {
-        return this.element.getBoundingClientRect()
+        return this._div.getBoundingClientRect()
+    }
+
+    public bounceX() {
+        this.xSpeed *= -1 * this.xSpeedMultiplier
+    }
+
+    public bounceY() {
+        this.ySpeed *= -1 * this.ySpeedMultiplier
     }
 }

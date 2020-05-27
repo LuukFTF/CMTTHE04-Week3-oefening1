@@ -1,53 +1,64 @@
 class Paddle {    
-
-    private element : HTMLElement
+    // Fields
+    private _div : HTMLElement
     private gameInstance : Game
 
-    private posX : number
-    private posY : number
+    private _X : number = 0
+    private _Y : number = 0
 
     private downkey : number
     private upkey : number
 
-    private downSpeed : number = 0
-    private upSpeed : number = 0
+    // private xSpeed : number = 0
+    private ySpeed : number = 0
 
-    private paddleSpeed : number
+    private _speedMultiplier : number = 10
+    // private xSpeedMultiplier : number = 1
+    // private ySpeedMultiplier : number = 1
 
+    // Properties
+    public get div(): HTMLElement           { return this._div }
 
-    constructor(gameInstance : Game) {
-        this.element = document.createElement("paddle")
+    public get X(): number                  { return this._X }
+    public get Y(): number                  { return this._Y }
+    public get speedMultiplier(): number    { return this._speedMultiplier }
+
+    // Constructor 
+    constructor(gameInstance : Game, 
+                xStart : number = 0, 
+                yStart : number = 200, 
+                upKey : number = 87, 
+                downkey : number = 83) {
 
         this.gameInstance = gameInstance
+        this._speedMultiplier = this._speedMultiplier * this.gameInstance.globalSpeed
 
-        this.paddleSpeed = 10*this.gameInstance.globalSpeed
+        this._div = document.createElement("paddle")
 
         let game = document.getElementsByTagName("game")[0]
-        game.appendChild(this.element)
+        game.appendChild(this._div)
 
-        this.upkey   = 87
-        this.downkey = 83
+        this.upkey   = upKey
+        this.downkey = downkey
 
-        this.posX = 0
-        this.posY = 200
+        this._X = xStart
+        this._Y = yStart
 
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
         window.addEventListener("keyup", (e: KeyboardEvent) => this.onKeyUp(e))
     }
 
-    public getRectangle() {
-        return this.element.getBoundingClientRect()
-    }
 
+    // Functions
+
+    // Loop Functions
     private onKeyDown(e: KeyboardEvent): void {
-        // console.log(e.keyCode)
-
         switch (e.keyCode) {
             case this.upkey:
-                this.upSpeed = this.paddleSpeed
+                this.ySpeed = this._speedMultiplier * -1
                 break
             case this.downkey:
-                this.downSpeed = this.paddleSpeed
+                this.ySpeed = this._speedMultiplier 
                 break
         }
     }
@@ -55,19 +66,24 @@ class Paddle {
     private onKeyUp(e: KeyboardEvent): void {
         switch (e.keyCode) {
             case this.upkey:
-                this.upSpeed = 0
+                this.ySpeed = 0
                 break
             case this.downkey:
-                this.downSpeed = 0
+                this.ySpeed = 0
                 break
         }
     }
 
     public update() {
-        let newPosY = this.posY - this.upSpeed + this.downSpeed
+        let newPosY = this._Y + this.ySpeed
 
-        if (newPosY > 0 && newPosY + 100 < window.innerHeight) this.posY = newPosY
+        if (newPosY > 0 && newPosY + this._div.clientHeight < window.innerHeight) this._Y = newPosY
 
-        this.element.style.transform = `translate(${this.posX}px, ${this.posY}px)`
+        this._div.style.transform = `translate(${this.X}px, ${this._Y}px)`
+    }
+
+    // General Functions
+    public getRectangle() {
+        return this._div.getBoundingClientRect()
     }
 }
